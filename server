@@ -1,0 +1,28 @@
+
+import socket
+import threading
+import random
+
+quotes = ["Kejayaan tidak datang bergolek","Never give up",
+"Usaha tangga kejayaan","Lead from the heart, not the head",
+"Usaha takkan mengkhianati hasil"]
+
+def qotd(clientsock):
+        randqotd = random.choice(quotes)
+        clientsock.sendall(randqotd.encode())
+        clientsock.close()
+
+def main():
+        ssock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        ssock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        ssock.bind(("192.168.195.136", 8888))
+        ssock.listen(5)
+
+        while True:
+                csock, addr = ssock.accept()
+                print("Connection from: %s" % str(addr))
+                thr = threading.Thread(target=qotd, args=(csock, ))
+                thr.start()
+main()
+
+
