@@ -1,0 +1,14 @@
+import socket
+
+def main():
+
+        csock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        csock.connect(("192.168.195.136", 8888))
+
+        quote=csock.recv(1024)
+        print("QOTD! : %s" % quote.decode())
+
+        csock.close()
+
+main()
